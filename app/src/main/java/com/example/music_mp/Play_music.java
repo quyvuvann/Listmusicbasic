@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.chibde.visualizer.BarVisualizer;
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,6 +41,7 @@ public class Play_music extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_music);
+        barVisualizer = findViewById(R.id.blast);
         anhxa();
         //barVisualizer = findViewById(R.id.blast);
         if(mediaPlayer != null){
@@ -71,7 +72,7 @@ public class Play_music extends AppCompatActivity {
                         sleep(500);
                         currentPosition = mediaPlayer.getCurrentPosition();
                         seekBar.setProgress(currentPosition);
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException | IllegalStateException e) {
                         e.printStackTrace();
                     }
                 }
@@ -131,10 +132,10 @@ public class Play_music extends AppCompatActivity {
             }
         });
 
-//        int autoSesstion = mediaPlayer.getAudioSessionId();
-//        if(autoSesstion != -1){
-//            barVisualizer.setAudioSessionId(autoSesstion);
-//        }
+        int autoSesstion = mediaPlayer.getAudioSessionId();
+        if(autoSesstion != -1){
+            barVisualizer.setAudioSessionId(autoSesstion);
+        }
 
         btnplay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,8 +173,9 @@ public class Play_music extends AppCompatActivity {
                 position = ((position+1)%mysongs.size());
                 Uri uri  = Uri.parse(mysongs.get(position).toString());
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
-                songnames = mysongs.get(position).toString();
+                songnames = mysongs.get(position).getName();
                 txttitle.setText(songnames);
+                txtendtime.setText(createTime(mediaPlayer.getDuration()));
                 mediaPlayer.start();
                 startAnimation(imageView,360f);
             }
@@ -183,11 +185,12 @@ public class Play_music extends AppCompatActivity {
             public void onClick(View v) {
                 mediaPlayer.stop();
                 mediaPlayer.release();
-                position = ((position-1)<0 ? (mysongs.size()-1):position-1);
+                position = ((position-1)<0) ? (mysongs.size()-1):position-1;
                 Uri uri = Uri.parse(mysongs.get(position).toString());
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),uri);
-                songnames = mysongs.get(position).toString();
+                songnames = mysongs.get(position).getName();
                 txttitle.setText(songnames);
+               txtendtime.setText(createTime(mediaPlayer.getDuration()));
                 mediaPlayer.start();
                 startAnimation(imageView,-360f);
             }
@@ -225,7 +228,7 @@ public class Play_music extends AppCompatActivity {
         btnrewind = findViewById(R.id.btnrewind);
         txttitle = findViewById(R.id.txtsong);
         seekBar  =findViewById(R.id.seekbar);
-         barVisualizer = findViewById(R.id.barvisualizer);
+
         txtstarttime = findViewById(R.id.starttime);
         txtendtime = findViewById(R.id.endttime);
         imageView = findViewById(R.id.imageviewplay);
