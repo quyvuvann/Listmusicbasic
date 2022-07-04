@@ -41,7 +41,7 @@ public class Play_music extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_music);
-        barVisualizer = findViewById(R.id.blast);
+        //barVisualizer = findViewById(R.id.blast);
         anhxa();
         //barVisualizer = findViewById(R.id.blast);
         if(mediaPlayer != null){
@@ -132,10 +132,10 @@ public class Play_music extends AppCompatActivity {
             }
         });
 
-        int autoSesstion = mediaPlayer.getAudioSessionId();
-        if(autoSesstion != -1){
-            barVisualizer.setAudioSessionId(autoSesstion);
-        }
+//        int autoSesstion = mediaPlayer.getAudioSessionId();
+//        if(autoSesstion != -1){
+//            barVisualizer.setAudioSessionId(autoSesstion);
+//        }
 
         btnplay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +228,6 @@ public class Play_music extends AppCompatActivity {
         btnrewind = findViewById(R.id.btnrewind);
         txttitle = findViewById(R.id.txtsong);
         seekBar  =findViewById(R.id.seekbar);
-
         txtstarttime = findViewById(R.id.starttime);
         txtendtime = findViewById(R.id.endttime);
         imageView = findViewById(R.id.imageviewplay);
